@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { VSpacer } from 'vuetify/components'
-import { VToolbar, VToolbarTitle } from 'vuetify/components/VToolbar'
+import { RouterLink, RouterView } from 'vue-router';
+import { VSpacer } from 'vuetify/components';
+import { VToolbar, VToolbarTitle } from 'vuetify/components/VToolbar';
 // import IconSupport from './components/icons/IconSupport.vue'
 </script>
 
