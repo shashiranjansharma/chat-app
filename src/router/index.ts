@@ -30,13 +30,15 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to: any) => {
-  const isAuthenticated = localStorage.getItem('chat_app_token')
-  if (
-    !isAuthenticated &&
-    !['Login', 'Register'].includes(to.name)
-  ) {
-    return { name: 'Login' }
+  const isAuthenticated = localStorage.getItem('chat_app_token');
+  const isPublic = ['Login', 'Register', 'ForgotPassword'].includes(to.name);
+  if (!isAuthenticated && !isPublic) {
+    return { name: 'Login' };
+  } else if (isAuthenticated && isPublic) {
+    return { name: 'Home' };
+  } else if (isAuthenticated && !to.name) {
+    return { name: 'Home' };
   }
-})
+});
 
 export default router;

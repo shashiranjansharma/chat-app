@@ -32,7 +32,8 @@ const isLoggedIn = computed(() => authStore.isLoggedIn);
   display: flex;
   align-items: center;
   width: 100vw;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
 }
 nav > a {
   text-decoration: none;
