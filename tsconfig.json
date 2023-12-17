@@ -1,5 +1,6 @@
 {
   "files": [],
+  // "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -7,5 +8,14 @@
     {
       "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+  // "include": ["src/"],
+  // "compilerOptions": {
+  //   "composite": true,
+  //   "baseUrl": ".",
+  //   "paths": {
+  //     "@/*": ["./src/*"],
+  //   }
+  // },
+ 
 }

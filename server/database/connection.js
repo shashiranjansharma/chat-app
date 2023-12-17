@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 async function connect() {
   try {
-    const url =
-      'mongodb+srv://findshashiranjan:annu@cluster0.fwua99e.mongodb.net/?retryWrites=true&w=majority';
+    const url = process.env.MONGO_DB_URL;
     mongoose.set('strictQuery', true);
     const db = await mongoose.connect(url);
     return db;

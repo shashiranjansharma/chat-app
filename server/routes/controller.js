@@ -33,7 +33,6 @@ export const register = async (req, res) => {
 };
 
 //Login user controller
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,6 +53,20 @@ export const login = async (req, res) => {
         );
         res.status(201).send({ message: `Welcome back ${user.name}`, token });
       } else res.status(401).send({ message: 'Email or Password is not valid.' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ message: error.message });
+  }
+};
+
+export const currentUserDetails = async (req, res) => {
+  try {
+    const { email } = req.validUser;
+    const user = await UserModel.findOne({ email });
+    if (user?.email) {
+      const { email, name, profile, _id } = user;
+      res.status(201).send({ email, name, profile, id: _id });
     }
   } catch (error) {
     console.log(error);

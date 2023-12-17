@@ -1,9 +1,15 @@
 /* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
+require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
   root: true,
-  'extends': [
+  env: {
+    node: true,
+    commonjs: true,
+    browser: true,
+    es6: true
+  },
+  extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
@@ -12,4 +18,4 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   }
-}
+};

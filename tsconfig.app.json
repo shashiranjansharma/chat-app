@@ -18,7 +18,7 @@
       ]
     },
     "types": [
-      "vuetify"
+      "vuetify", "node"
     ]
   }
 }

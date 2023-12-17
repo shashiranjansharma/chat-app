@@ -1,28 +1,42 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
+      meta: { protedted: true },
       component: HomeView
     },
     {
       path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      name: 'About',
+      meta: { protedted: true },
+      component: () => import('@/views/AboutView.vue')
     },
     {
       path: '/auth/login',
       name: 'Login',
-      component: () => import('../components/LoginForm.vue')
+      component: () => import('@/components/LoginForm.vue')
+    },
+    {
+      path: '/auth/register',
+      name: 'Register',
+      component: () => import('@/components/RegisterForm.vue')
     }
   ]
+});
+
+router.beforeEach(async (to: any) => {
+  const isAuthenticated = localStorage.getItem('chat_app_token')
+  if (
+    !isAuthenticated &&
+    !['Login', 'Register'].includes(to.name)
+  ) {
+    return { name: 'Login' }
+  }
 })
 
-export default router
+export default router;
