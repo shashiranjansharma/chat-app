@@ -15,7 +15,10 @@ export const UserSchema = new mongoose.Schema({
     required: [true, 'password is required']
   },
   phone: { type: String },
-  profile: { type: String }
+  profile: { type: String },
+  resetPassOtp: {
+    type: String
+  }
 });
 
 export default mongoose.model.Users || mongoose.model('User', UserSchema);

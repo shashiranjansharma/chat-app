@@ -1,6 +1,8 @@
 import UserModel from '../models/user.js';
+import OtpModel from '../models/otp.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import sendMail from '../service/sendmail.js';
 
 //Register user controller
 export const register = async (req, res) => {
@@ -73,3 +75,56 @@ export const currentUserDetails = async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 };
+
+export async function requestOtp(req, res) {
+  try {
+    const { email } = req.body;
+    if (!email)
+      return res.status(400).send({ message: 'Invalid request, Email is required to send OTP' });
+    const user = await UserModel.findOne({ email });
+    const tempOtp = await OtpModel.findOne({ email });
+    if (tempOtp) {
+      await OtpModel.findOneAndDelete({ email: tempOtp.email });
+    }
+    if (user?.email) {
+      const { email, name } = user;
+      const otp = Math.floor(100000 + Math.random() * 900000);
+      const encriptedOtp = await bcrypt.hash(otp.toString(), 12);
+      const payload = new OtpModel({
+        otp: encriptedOtp,
+        email: email
+      });
+      await payload.save();
+      await sendMail(email, name, otp);
+      res.status(200).send({ message: 'OTP has been sent to your registered email.' });
+    } else res.status(200).send({ message: 'OTP has been sent to your registered email.' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ message: error.message });
+  }
+}
+
+export async function verifyOtp(req, res) {
+  try {
+    const { otp, password, email } = req.body;
+    if (!email || !otp)
+      return res
+        .status(400)
+        .send({ message: 'Invalid request, Email and OTP are required for verification' });
+    const user = await OtpModel.findOne({ email });
+    if (user?.createdAt <= 0) return res.status(200).send({ message: 'OTP has been expired.' });
+    if (user?.email) {
+      const isValid = await bcrypt.compare(otp, user.otp);
+      console.log(isValid);
+      if (isValid) {
+        const pass = await bcrypt.hash(password, 12);
+        const x = await UserModel.findOneAndUpdate({ email }, { password: pass });
+        if (x)
+          return res.status(201).send({ message: `Your password has been updated successfully.` });
+      } else res.status(400).send({ message: 'Invalid otp' });
+    } else res.status(400).send({ message: 'Invalid email' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ message: error.message });
+  }
+}

@@ -10,6 +10,7 @@ const $notify: any = inject('$notify');
 
 const state = reactive({
   valid: false,
+  showPass: false,
   showRegisterForm: false,
   email: '',
   password: '',
@@ -80,9 +81,11 @@ async function register() {
         <v-text-field
           v-model="state.password"
           label="Password"
-          type="password"
+          :type="state.showPass ? 'text' : 'password'"
+          append-inner-icon="mdi-eye"
           variant="solo"
           :rules="state.passwordRule"
+          @click:append-inner="state.showPass = !state.showPass"
         ></v-text-field>
         <div class="d-flex justify-space-between mt-4">
           <v-btn type="submit" color="blue" class="mt-2" @click="register">Register</v-btn>

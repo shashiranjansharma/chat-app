@@ -34,10 +34,30 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function sendOtp(payload: any) {
+    try {
+      const res = await post('/request-otp', payload);
+      const { data } = res;
+      return data;
+    } catch (e: any) {
+      throw e.response.data;
+    }
+  }
+
+  async function resetPassword(payload: any) {
+    try {
+      const res = await post('/reset-password', payload);
+      const { data } = res;
+      return data;
+    } catch (e: any) {
+      throw e.response.data;
+    }
+  }
+
   async function logout() {
     localStorage.removeItem('chat_app_token');
     setToken('');
   }
 
-  return { isLoggedIn, setToken, login, logout, register };
+  return { isLoggedIn, setToken, login, logout, register, sendOtp, resetPassword };
 });
